@@ -2,6 +2,8 @@
 using PhoneBook.Presentation.ActionFilters;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Shared.RequestFeatures;
+using System.Text.Json;
 
 namespace PhoneBook.Presentation.Controllers
 {
@@ -18,10 +20,13 @@ namespace PhoneBook.Presentation.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetContacts()
+        public async Task<IActionResult> GetContacts([FromQuery] ContactParameters contactParameters)
         {
-            var contacts = await _service.ContactService.GetAllContactsAsync(trackChanges: false);
-            return Ok(contacts);
+            var pageResult = await _service.ContactService.GetAllContactsAsync(
+                contactParameters, trackChanges: false);
+            Response.Headers["X-Pagination"] = JsonSerializer.Serialize(pageResult.metaData);
+
+            return Ok(pageResult.contacts);
         }
 
         [HttpGet("{id:guid}", Name = "ContactById")]

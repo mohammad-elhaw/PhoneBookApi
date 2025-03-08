@@ -4,6 +4,7 @@ using Entities.Exceptions;
 using Entities.Models;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Shared.RequestFeatures;
 
 namespace Service
 {
@@ -46,11 +47,13 @@ namespace Service
             await _repository.SaveAsync();
         }
 
-        public async Task<IEnumerable<ContactDto>> GetAllContactsAsync(bool trackChanges)
+        public async Task<(IEnumerable<ContactDto> contacts, MetaData metaData)> GetAllContactsAsync(
+            ContactParameters contactParameters, bool trackChanges)
         {
-            var contacts = await _repository.Contact.GetAllContactsAsync(trackChanges);
-            var contactsDto = _mapper.Map<IEnumerable<ContactDto>>(contacts);
-            return contactsDto;
+            var contactsWithMetaData = await _repository.Contact.GetAllContactsAsync(contactParameters, 
+                trackChanges);
+            var contactsDto = _mapper.Map<IEnumerable<ContactDto>>(contactsWithMetaData);
+            return (contacts: contactsDto, metaData: contactsWithMetaData.MetaData);
         }
 
         public async Task<ContactDto> GetContactAsync(Guid id, bool trackChanges)
