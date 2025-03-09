@@ -13,13 +13,6 @@ namespace Repository.Configuration
     {
         public void Configure(EntityTypeBuilder<Contact> builder)
         {
-            builder.Property(c => c.CreatedAt)
-                .HasDefaultValueSql("GETDATE()");
-
-            builder.Property(c => c.UpdatedAt)
-                .HasDefaultValueSql("GETDATE()")
-                .ValueGeneratedOnAddOrUpdate();
-
             builder.HasData
             (
                 new Contact()

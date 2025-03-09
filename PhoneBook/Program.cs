@@ -10,7 +10,7 @@ namespace PhoneBook
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            //builder.Services.ConfigureCors();
+            builder.Services.ConfigureCors();
             builder.Services.ConfigureRepositoryManager();
             builder.Services.ConfigureServiceManager();
             builder.Services.ConfigureSqlContext(builder.Configuration);
@@ -29,8 +29,8 @@ namespace PhoneBook
 
             app.UseHttpsRedirection();
 
+            app.UseCors("AllowAngularApp");
             app.UseAuthorization();
-
 
             app.MapControllers();
 

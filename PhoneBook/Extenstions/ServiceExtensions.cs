@@ -12,10 +12,11 @@ namespace PhoneBook.Extenstions
         public static void ConfigureCors(this IServiceCollection services) =>
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy", builder =>
+                options.AddPolicy("AllowAngularApp", builder =>
                 builder.AllowAnyOrigin()
                        .AllowAnyHeader()
-                       .AllowAnyMethod());
+                       .AllowAnyMethod()
+                       .WithExposedHeaders("X-Pagination"));
             });
 
         public static void ConfigureRepositoryManager(this IServiceCollection services) =>
@@ -27,7 +28,7 @@ namespace PhoneBook.Extenstions
         public static void ConfigureSqlContext(this IServiceCollection services,
             IConfiguration configuration) =>
             services.AddDbContext<RepositoryContext>(opts =>
-                opts.UseSqlServer(configuration.GetConnectionString("sqlConnection")));
+                opts.UseNpgsql(configuration.GetConnectionString("sqlConnection")));
 
     }
 }

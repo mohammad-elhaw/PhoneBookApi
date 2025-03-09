@@ -24,8 +24,6 @@ namespace Entities.Models
         [MaxLength(50)]
         public string Email { get; set; }
 
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
 
     }
 }

@@ -14,7 +14,7 @@ namespace PhoneBook.ContextFactory
                 .Build();
 
             var builder = new DbContextOptionsBuilder<RepositoryContext>()
-                .UseSqlServer(configuration.GetConnectionString("sqlConnection"),
+                .UseNpgsql(configuration.GetConnectionString("sqlConnection"),
                 opts=> opts.MigrationsAssembly(nameof(PhoneBook)));
 
             return new RepositoryContext(builder.Options);
